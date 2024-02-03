@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
     bucket = "terraform-deploy-jonjon"
-    key    = "devops-ninja-eks"
+    key    = "eks-cluster"
     region = "us-east-2"
   }
 }
