@@ -1,18 +1,16 @@
 module "eks" {
-  source          = "terraform-aws-modules/eks/aws"
-  cluster_name    = local.cluster_name
-  cluster_version = "1.18"
-  subnets         = module.vpc.public_subnets
+  source           = "terraform-aws-modules/eks/aws"
+  cluster_name     = local.cluster_name
+  cluster_version  = "1.18"
+  subnets          = module.vpc.public_subnets
+  vpc_id           = module.vpc.vpc_id
+  manage_aws_auth  = true # Adicionando esta configuração para gerenciamento automático da autenticação do Kubernetes
+  write_kubeconfig = false # Desabilitando a gravação do kubeconfig, pois vamos utilizar a autenticação automática
+
   tags = {
     Environment = "training"
     GithubRepo  = "terraform-aws-eks"
     GithubOrg   = "terraform-aws-modules"
-  }
-
-  vpc_id = module.vpc.vpc_id
-
-  workers_group_defaults = {
-    root_volume_type = "gp2"
   }
 
   worker_groups = [
@@ -21,14 +19,16 @@ module "eks" {
       instance_type                 = "t2.small"
       additional_userdata           = "echo foo bar"
       asg_desired_capacity          = 1
+      root_volume_type              = "gp2" # Movendo root_volume_type para dentro de worker_groups
       additional_security_group_ids = [aws_security_group.worker_group_mgmt_one.id]
     },
     {
       name                          = "worker-group-2"
       instance_type                 = "t2.medium"
       additional_userdata           = "echo foo bar"
-      additional_security_group_ids = [aws_security_group.worker_group_mgmt_two.id]
       asg_desired_capacity          = 1
+      root_volume_type              = "gp2" # Movendo root_volume_type para dentro de worker_groups
+      additional_security_group_ids = [aws_security_group.worker_group_mgmt_two.id]
     },
   ]
 }
