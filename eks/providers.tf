@@ -1,8 +1,8 @@
-terraform {
-  backend "s3" {
-    bucket = "terraform-deploy-jonjon"
-    key    = "devops-ninja-eks"
-    region = "us-east-2"
-  }
-}
+#terraform {
+#  backend "s3" {
+#    bucket = "terraform-eks3323"
+#    key    = "eks-cluster"
+#    region = "us-east-2"
+#  }
+#}
 

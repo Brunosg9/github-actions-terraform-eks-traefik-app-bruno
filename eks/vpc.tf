@@ -10,7 +10,7 @@ provider "aws" {
 data "aws_availability_zones" "available" {}
 
 locals {
-  cluster_name = "devops-ninja-eks-${random_string.suffix.result}"
+  cluster_name = "bgs9-terraform-git-${random_string.suffix.result}"
 }
 
 resource "random_string" "suffix" {
@@ -45,3 +45,4 @@ module "vpc" {
     "kubernetes.io/role/internal-elb"             = "1"
   }
 }
+
